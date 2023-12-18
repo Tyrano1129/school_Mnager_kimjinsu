@@ -2,6 +2,8 @@ package School_김진수Ver3;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StudentDAO {
 	private ArrayList<Student> stuList;
@@ -59,12 +61,26 @@ public class StudentDAO {
 			}
 		}
 		return -1;
+	}// 패턴 아이디
+	private boolean idpattern(String id) {
+		String idPatter = "^[a-z]{1}[a-z0-9]{5,10}$";
+		Pattern p = Pattern.compile(idPatter);
+		Matcher m = p.matcher(id);
+		if(m.matches()) {
+			System.out.println("id 맞는 표현입니다.");
+			return true;
+		}
+		System.out.println("id 틀린표현 표현입니다.");
+		return false;
 	}
 	public void studentJoin() {
 		String id = Util.getValueString("학생 id 입력 : ");
 		int idx = checkIdx(id);
 		if(idx != -1) {
 			System.out.println("중복된 아이디입니다.");
+			return;
+		}
+		if(!idpattern(id)) {
 			return;
 		}
 		stuList.add(new Student(this.number,Util.getValueString("이름 입력 : "),id));
